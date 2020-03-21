@@ -9,6 +9,7 @@ export function gameReducer(state, {type, payload}) {
                 ...state,
                 board: initiateBoard(payload.size, payload.mines),
                 gameSize: payload.size,
+                flagsLeft: payload.size,
             }
         case GameActions.UNCOVER_CELL:
             return {
@@ -24,7 +25,23 @@ export function gameReducer(state, {type, payload}) {
                 flagsLeft: flagCount(state.board, payload.row, payload.column, state.flagsLeft),
                 gameWin: winCheck(state.board, payload.row, payload.column, state.mines, state.gameSize),
             }
+        case GameActions.SHOW_ALL_CELLS:
+            return {
+                ...state,
+                board: uncoverAllCells(state.board)
+            }
     }
+}
+
+function uncoverAllCells(board: BoardMap): BoardMap {
+    const newBoard = JSON.parse(JSON.stringify(board));
+
+    newBoard.map((row) => {
+        row.map((column) => {
+            column.uncovered = true;
+        })
+    });
+    return newBoard;
 }
 
 function winCheck(board: BoardMap, row: number, column: number, mines: number, size: number): boolean {
@@ -39,7 +56,6 @@ function winCheck(board: BoardMap, row: number, column: number, mines: number, s
             column.uncovered && count++;
         })
     });
-    console.log(count, cellsToDiscover);
     return count === cellsToDiscover;
 }
 
@@ -78,8 +94,8 @@ function initiateBoard(size: number, mines: number): BoardMap {
     let newBoard = JSON.parse(JSON.stringify(initiateEmptyBoard(size)));
     let placedMines = 0;
     while (placedMines < mines) {
-        const x = Math.floor(Math.random()*(9+1));
-        const y = Math.floor(Math.random()*(9+1));
+        const x = Math.floor(Math.random()*(size));
+        const y = Math.floor(Math.random()*(size));
 
         if (!newBoard[x][y].isMine) {
             newBoard[x][y].isMine = true;

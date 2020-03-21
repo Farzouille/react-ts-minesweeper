@@ -7,6 +7,8 @@ export interface GameBoard {
     gameWin: boolean,
     gameSize: number,
     flagsLeft: number,
+    gameRunning: boolean,
+    gameTimer: number,
 }
 
 export type BoardMap = Array<Array<CellState>>;

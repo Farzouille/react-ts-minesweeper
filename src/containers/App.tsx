@@ -5,7 +5,7 @@ import { GameBoard } from './GameBoard';
 function App() {
   return (
     <div className="App">
-      <GameBoard gameSize={10} mineNumber={10} />
+      <GameBoard />
     </div>
   );
 }

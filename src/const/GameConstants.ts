@@ -3,8 +3,10 @@ import { GameBoard } from '../interfaces/Board';
 export const GameInitialState: GameBoard = {
     board: [],
     gameOver: false,
-    mines: 10,
-    gameSize: 10,
+    mines: 0,
+    gameSize: 0,
     gameWin: false,
-    flagsLeft: 10,
+    flagsLeft: 0,
+    gameRunning: false,
+    gameTimer: 0,
   };
