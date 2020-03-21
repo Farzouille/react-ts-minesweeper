@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, Dispatch, useState } from 'react';
+import React, { useReducer, Dispatch, useState } from 'react';
 import { gameReducer } from '../reducers/GameReducer';
 import { GameInitialState } from '../const/GameConstants';
 import { Cell } from '../components/Cell';
@@ -26,11 +26,11 @@ export const GameBoard: React.FunctionComponent = () => {
       <dispatchContext.Provider value={dispatch}>
         <form onSubmit={handleSubmit}>
           <label>
-            Selet the size of your board
+            Selet the size of your board (Max 100)
             <input type="number" value={size} onChange={e => setSize(+e.target.value)} max={100} />
           </label><br />
           <label>
-            Selet the number of mines
+            Selet the number of mines (Max 10 000)
             <input type="number" value={mines} onChange={e => setMines(+e.target.value)} max={10000} />
           </label><br />
           <input type="submit" value="New Game" />

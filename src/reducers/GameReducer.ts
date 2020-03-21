@@ -9,7 +9,7 @@ export function gameReducer(state, {type, payload}) {
                 ...state,
                 board: initiateBoard(payload.size, payload.mines),
                 gameSize: payload.size,
-                flagsLeft: payload.size,
+                flagsLeft: payload.mines,
             }
         case GameActions.UNCOVER_CELL:
             return {
