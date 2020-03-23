@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-
+import React, { useContext } from 'react';
 import { GameActions } from '../actions/GameActions';
 import { dispatchContext, stateContext } from '../containers/GameBoard';
 import { CellState } from '../interfaces/Cell';

@@ -100,9 +100,9 @@
   .cell_content.flagged {
     background-image: url('../assets/Minesweeper_flag.svg');
 
-    // &.mine {
-    //   background-image: none;
-    // }
+    &.mine {
+      background-image: url('../assets/mine.png');
+    }
   }
 
   &.noHover:hover {
