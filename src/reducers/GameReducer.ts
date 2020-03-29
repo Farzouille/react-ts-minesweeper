@@ -30,8 +30,9 @@ export function gameReducer(state: GameBoard, { type, payload }): GameBoard {
                 ...state,
                 board:
                     gameWin || newBoardUncovered[payload.row][payload.column].isMine
-                        ? uncoverAllMines(state.board)
+                        ? uncoverAllMines(newBoardUncovered, true)
                         : newBoardUncovered,
+                flagsLeft: flagCount(newBoardUncovered, state.mines),
                 gameOver: newBoardUncovered[payload.row][payload.column].isMine,
                 gameWin,
                 gameRunning: !(gameWin || newBoardUncovered[payload.row][payload.column].isMine),
@@ -53,8 +54,8 @@ export function gameReducer(state: GameBoard, { type, payload }): GameBoard {
                     : false;
             return {
                 ...state,
-                board: gameWinFlag || gameOver ? uncoverAllMines(state.board) : newBoard,
-                flagsLeft: flagCount(state.board, payload.row, payload.column, state.flagsLeft),
+                board: gameWinFlag || gameOver ? uncoverAllMines(newBoard, true) : newBoard,
+                flagsLeft: flagCount(newBoard, state.mines),
                 gameWin: gameWinFlag,
                 gameOver,
                 gameRunning: !(gameWinFlag || gameOver),
@@ -62,7 +63,7 @@ export function gameReducer(state: GameBoard, { type, payload }): GameBoard {
         case GameActions.SHOW_ALL_MINES:
             return {
                 ...state,
-                board: uncoverAllMines(state.board),
+                board: uncoverAllMines(state.board, false),
             };
     }
     return state;
@@ -82,12 +83,12 @@ function checkFlagsOnMines(board: BoardMap, row: number, column: number, mines: 
     return count !== mines;
 }
 
-function uncoverAllMines(board: BoardMap): BoardMap {
+function uncoverAllMines(board: BoardMap, gameWin: boolean): BoardMap {
     const newBoard = JSON.parse(JSON.stringify(board));
     newBoard.map((row) => {
         row.map((column) => {
             if (column.isMine) {
-                column.uncovered = !column.uncovered;
+                column.uncovered = gameWin ? true : !column.uncovered;
             }
             return column;
         });
@@ -112,7 +113,7 @@ function winCheck(
     if (newBoard[row][column].isMine && click === 'left') {
         return false;
     }
-    if (click === 'left') {
+    if (click === 'right') {
         newBoard[row][column].flagged = true;
     }
     newBoard.map((rowMap) => {
@@ -126,15 +127,17 @@ function winCheck(
     return countDiscovered === cellsToDiscover || (flagsLeft === 1 && countMineFlagged === mines);
 }
 
-function flagCount(board: BoardMap, row: number, column: number, flagsLeft: number): number {
+function flagCount(board: BoardMap, mines: number): number {
     const newBoard = JSON.parse(JSON.stringify(board));
-    if (newBoard[row][column].flagged) {
-        return flagsLeft + 1;
-    }
-    if (!newBoard[row][column].flagged && flagsLeft > 0) {
-        return flagsLeft - 1;
-    }
-    return flagsLeft;
+    let flaggedCount = 0;
+    newBoard.map((rowMap) => {
+        rowMap.map((columnMap) => {
+            columnMap.flagged && flaggedCount++;
+            return columnMap;
+        });
+        return rowMap;
+    });
+    return mines - flaggedCount;
 }
 
 function placeFlag(board: BoardMap, row: number, column: number, flagsLeft: number): BoardMap {

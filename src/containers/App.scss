@@ -98,8 +98,11 @@
   }
 
   .cell_content.flagged {
+    margin-left: -5px;
+    margin-top: -5px;
+    width: 25px;
+    height: 25px;
     background-image: url('../assets/Minesweeper_flag.svg');
-
     &.mine {
       background-image: url('../assets/mine.png');
     }
