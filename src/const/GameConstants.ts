@@ -8,5 +8,4 @@ export const GameInitialState: GameBoard = {
     gameWin: false,
     flagsLeft: 0,
     gameRunning: false,
-    gameTimer: 0,
-  };
+};

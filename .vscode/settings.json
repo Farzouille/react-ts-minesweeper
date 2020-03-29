@@ -1,0 +1,14 @@
+
+{
+    "eslint.nodePath": "node_modules/eslint",
+
+    // "eslint.autoFixOnSave": true, // has been deprecated, use editor.codeActionsOnSave instead
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+    ]
+}
+    

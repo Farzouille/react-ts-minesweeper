@@ -3,4 +3,4 @@ export const GameActions = {
     UNCOVER_CELL: 'UNCOVER_CELL',
     RIGHT_CLICK_CELL: 'RIGHT_CLICK_CELL',
     SHOW_ALL_MINES: 'SHOW_ALL_MINES',
-  };
+};
